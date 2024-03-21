@@ -22,6 +22,11 @@ public class FlightController {
     public List<Flight> getAllFlights(){
         return flightService.getAllFlights();
     }
+
+    @GetMapping("{id}")
+    public Flight flightById(@PathVariable Long id){
+        return flightService.flightById(id);
+    }
     @PostMapping("/add")
     public ResponseEntity<String> addFlight (@RequestBody Flight flight){
         flightService.addFlight(flight);
@@ -38,5 +43,9 @@ public class FlightController {
         }
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteFlight(@PathVariable Long id){
+        flightService.deleteFlight(id);
+    }
 
 }

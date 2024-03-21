@@ -80,5 +80,24 @@ public class FlightService {
         }
         return false;
     }
+
+    public boolean deleteFlight(Long id){
+        for(Flight flight: flightlist){
+            if(flight.getId().equals(id)){
+                flightlist.remove(flight);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Flight flightById (Long id){
+        for (Flight flight : flightlist){
+            if(flight.getId().equals(id)){
+                return flight;
+            }
+        }
+        return null;
+    }
 }
 
