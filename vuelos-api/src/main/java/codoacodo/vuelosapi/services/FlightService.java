@@ -81,10 +81,10 @@ public class FlightService {
         return false;
     }
 
-    public boolean deleteFlight(Long id){
+    public boolean deleteFlight(Flight flightToRemove){
         for(Flight flight: flightlist){
-            if(flight.getId().equals(id)){
-                flightlist.remove(flight);
+            if(flight.getId().equals(flightToRemove.getId())){
+                flightlist.remove(flightToRemove);
                 return true;
             }
         }

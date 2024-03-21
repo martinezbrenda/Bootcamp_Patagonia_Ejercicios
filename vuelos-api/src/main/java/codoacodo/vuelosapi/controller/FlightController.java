@@ -18,7 +18,7 @@ public class FlightController {
     public String HolaMundo(){
         return flightService.HolaMundo();
     }
-    @GetMapping("/flightsList")
+    @GetMapping("/list")
     public List<Flight> getAllFlights(){
         return flightService.getAllFlights();
     }
@@ -44,8 +44,11 @@ public class FlightController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteFlight(@PathVariable Long id){
-        flightService.deleteFlight(id);
+    public ResponseEntity<String> deleteFlight(@PathVariable Long id){
+        if(flightService.deleteFlight(flightService.flightById(id)))
+            return ResponseEntity.ok("Flight successfully deleted");
+        else
+            return ResponseEntity.notFound().build();
     }
 
 }
