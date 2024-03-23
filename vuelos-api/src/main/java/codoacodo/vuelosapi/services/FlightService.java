@@ -1,6 +1,8 @@
 package codoacodo.vuelosapi.services;
 
 import codoacodo.vuelosapi.model.Flight;
+import codoacodo.vuelosapi.repository.FlightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,7 +11,8 @@ import java.util.List;
 @Service
 public class FlightService {
     private List<Flight> flightlist = new ArrayList<Flight>();
-
+    @Autowired
+    FlightRepository flightRepository;
     public FlightService() {
         Flight flight1 = new Flight(1L, "Buenos Aires", "Cordoba", "24-02-2024", "25-02-2024", 89000, "Mensual");
         Flight flight2 = new Flight(2L, "Mendoza", "San Juan", "21-03-2024", "22-03-2024", 90000, "Anual");
