@@ -22,4 +22,14 @@ public class Flight {
     private String arrivalDate;
     private double price;
     private String frequency;
+
+    public Flight(String origin, String destination, String departureDate, String arrivalDate, double price, String frequency) {
+        this.origin = origin;
+        this.destination = destination;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.price = price;
+        this.frequency = frequency;
+    }
 }
+
