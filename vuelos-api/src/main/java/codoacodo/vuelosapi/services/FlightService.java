@@ -31,7 +31,7 @@ public class FlightService {
         flightRepository.saveAll(flights);
     }
 
-    public void updateFlight(Long id, Flight updatedFlight){
+    public Optional<Flight> updateFlight(Long id, Flight updatedFlight){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
         if (existingFlight != null) {
             existingFlight.setOrigin(updatedFlight.getOrigin());
@@ -44,6 +44,7 @@ public class FlightService {
         } else {
             throw new FlightException("El vuelo con ID " + id + " no existe. No se puede actualizar.");
         }
+        return flightRepository.findById(id);
     }
 
     public void deleteFlight(Long id){
@@ -56,10 +57,10 @@ public class FlightService {
 
     }
 
-    public Flight flightById (Long id){
+    public Optional<Flight> flightById (Long id){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
         if(existingFlight != null)
-            return existingFlight;
+            return Optional.of(existingFlight);
         else
             throw new FlightException("El vuelo con ID " + id + " no existe");
 

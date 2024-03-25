@@ -3,11 +3,11 @@ package codoacodo.vuelosapi.controller;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/flights")
@@ -24,7 +24,7 @@ public class FlightController {
     }
 
     @GetMapping("{id}")
-    public Flight flightById(@PathVariable(name = "id") Long id){
+    public Optional<Flight> flightById(@PathVariable(name = "id") Long id){
         return flightService.flightById(id);
     }
     @PostMapping("/add")
@@ -33,8 +33,8 @@ public class FlightController {
     }
 
     @PutMapping("/update/{id}")
-    public void updateFlight(@PathVariable Long id, @RequestBody Flight flight){
-        flightService.updateFlight(id,flight);
+    public Optional<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight){
+        return flightService.updateFlight(id,flight);
     }
 
     @DeleteMapping("/delete/{id}")
