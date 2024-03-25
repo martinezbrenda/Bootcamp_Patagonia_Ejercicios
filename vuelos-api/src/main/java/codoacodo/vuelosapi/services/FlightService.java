@@ -27,7 +27,7 @@ public class FlightService {
     public void addFlight(Flight flight){
         flightRepository.save(flight);
     }
-    public void addFlight(List<Flight> flights){
+    public void addFlightList(List<Flight> flights){
         flightRepository.saveAll(flights);
     }
 

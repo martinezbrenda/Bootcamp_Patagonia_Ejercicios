@@ -31,6 +31,10 @@ public class FlightController {
     public void addFlight (@RequestBody Flight flight){
         flightService.addFlight(flight);
     }
+    @PostMapping("/addList")
+    public void addFlightList (@RequestBody List<Flight> flights){
+        flightService.addFlightList(flights);
+    }
 
     @PutMapping("/update/{id}")
     public Optional<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight){
