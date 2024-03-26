@@ -6,7 +6,7 @@ import codoacodo.vuelosapi.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +24,11 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
-    public void addFlight(Flight flight){
-        flightRepository.save(flight);
+    public Flight addFlight(Flight flight){
+        return flightRepository.save(flight);
     }
-    public void addFlightList(List<Flight> flights){
-        flightRepository.saveAll(flights);
+    public List<Flight> addFlightList(List<Flight> flights){
+        return flightRepository.saveAll(flights);
     }
 
     public Optional<Flight> updateFlight(Long id, Flight updatedFlight){

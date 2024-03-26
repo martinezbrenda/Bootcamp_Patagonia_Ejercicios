@@ -27,13 +27,15 @@ public class FlightController {
     public Optional<Flight> flightById(@PathVariable(name = "id") Long id){
         return flightService.flightById(id);
     }
+
+
     @PostMapping("/add")
-    public void addFlight (@RequestBody Flight flight){
-        flightService.addFlight(flight);
+    public Flight addFlight (@RequestBody Flight flight){
+        return flightService.addFlight(flight);
     }
     @PostMapping("/addList")
-    public void addFlightList (@RequestBody List<Flight> flights){
-        flightService.addFlightList(flights);
+    public List<Flight> addFlightList (@RequestBody List<Flight> flights){
+        return flightService.addFlightList(flights);
     }
 
     @PutMapping("/update/{id}")
