@@ -28,6 +28,8 @@ public class FlightController {
         return flightService.flightById(id);
     }
 
+    @GetMapping("/less/{price}")
+    
 
     @PostMapping("/add")
     public Flight addFlight (@RequestBody Flight flight){

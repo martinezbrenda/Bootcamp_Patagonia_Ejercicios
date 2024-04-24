@@ -3,10 +3,12 @@ package codoacodo.vuelosapi.services;
 import codoacodo.vuelosapi.FlightException.FlightException;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.repository.FlightRepository;
+import codoacodo.vuelosapi.utils.FlightUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,8 @@ public class FlightService {
 
     @Autowired
     FlightRepository flightRepository;
+    @Autowired
+    FlightUtils flightUtils;
 
     public String HolaMundo() {
         return "Hola Mundo!";
@@ -64,6 +68,10 @@ public class FlightService {
         else
             throw new FlightException("El vuelo con ID " + id + " no existe");
 
+    }
+
+    public List<Flight> getLessThan(float price){
+        return flightUtils.detectOffers(flightRepository.findAll(),price);
     }
 }
 
