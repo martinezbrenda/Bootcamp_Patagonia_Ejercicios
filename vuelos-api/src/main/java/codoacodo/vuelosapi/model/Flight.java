@@ -31,5 +31,7 @@ public class Flight {
         this.price = price;
         this.frequency = frequency;
     }
+
+
 }
 

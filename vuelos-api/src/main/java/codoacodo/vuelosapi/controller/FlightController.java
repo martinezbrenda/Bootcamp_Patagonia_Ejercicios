@@ -29,7 +29,9 @@ public class FlightController {
     }
 
     @GetMapping("/less/{price}")
-    
+    public Optional<Optional<List<Flight>>> getLessThan(@PathVariable(name = "price") Long price){
+        return flightService.getLessThan(price);
+    }
 
     @PostMapping("/add")
     public Flight addFlight (@RequestBody Flight flight){

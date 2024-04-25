@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,8 +69,8 @@ public class FlightService {
 
     }
 
-    public List<Flight> getLessThan(float price){
-        return flightUtils.detectOffers(flightRepository.findAll(),price);
+    public Optional<Optional<List<Flight>>> getLessThan(float price){
+        return Optional.of(flightUtils.detectOffers(flightRepository.findAll(),price));
     }
 }
 
