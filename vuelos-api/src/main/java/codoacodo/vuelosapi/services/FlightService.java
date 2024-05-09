@@ -69,8 +69,8 @@ public class FlightService {
 
     }
 
-    public Optional<Optional<List<Flight>>> getLessThan(float price){
-        return Optional.of(flightUtils.detectOffers(flightRepository.findAll(),price));
+    public List<Flight> getLessThan(float price){
+        return flightUtils.detectOffers(flightRepository.findAll(),price);
     }
 }
 

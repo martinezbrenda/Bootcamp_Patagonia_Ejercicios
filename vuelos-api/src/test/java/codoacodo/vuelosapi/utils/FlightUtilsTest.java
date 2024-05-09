@@ -6,24 +6,24 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class FlightUtilsTest {
-    private static List<Flight> flightList= new ArrayList<>();
-    @Autowired
-    private  FlightUtils flightUtils;
+    private static final List<Flight> flightList= new ArrayList<>();
 
-    @Autowired
-    private  FlightRepository  flightRepository;
-    @Autowired
-    private Flight flight;
+    private static FlightUtils flightUtils;
+
     @BeforeAll
     public static void setUp(){
+        flightUtils = new FlightUtils();
         System.out.println("Se esta creando la lista de vuelos\n");
         Flight f1 = new Flight(1L, "Nueva York", "Los Ángeles", "2024-04-25", "2024-04-25", 350.00, "Diaria");
         Flight f2 = new Flight(2L, "Los Ángeles", "Chicago", "2024-04-26", "2024-04-26", 280.75, "Semanal");
@@ -43,11 +43,11 @@ class FlightUtilsTest {
 
     @Test
     void offerTest(){
-        long offerPrice = 350;
+        float offerPrice = 350f;
         List<Flight> expectedList = new ArrayList<>();
-        expectedList.add(f2);
-        expectedList.add(f4);
-        Optional<List<Flight>> resultedList = flightUtils.detectOffers(flightList, offerPrice);
+        expectedList.add(flightList.get(1));
+        expectedList.add(flightList.get(3));
+        List<Flight> resultedList = flightUtils.detectOffers(flightList, offerPrice);
         Assertions.assertEquals(expectedList,resultedList);
     }
 
