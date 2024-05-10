@@ -1,6 +1,8 @@
 package codoacodo.vuelosapi.services;
 
 import codoacodo.vuelosapi.FlightException.FlightException;
+import codoacodo.vuelosapi.configuration.FlightConfiguration;
+import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.repository.FlightRepository;
 import codoacodo.vuelosapi.utils.FlightUtils;
@@ -18,6 +20,8 @@ public class FlightService {
     FlightRepository flightRepository;
     @Autowired
     FlightUtils flightUtils;
+    @Autowired
+    FlightConfiguration flightConfiguration;
 
     public String HolaMundo() {
         return "Hola Mundo!";
@@ -71,6 +75,13 @@ public class FlightService {
 
     public List<Flight> getLessThan(float price){
         return flightUtils.detectOffers(flightRepository.findAll(),price);
+    }
+
+    public List <Dolar> getDolares(){
+        return flightConfiguration.fetchDolares();
+    }
+    public Dolar getDolarCasa(String casa){
+        return flightConfiguration.fetchDolarCasa(casa);
     }
 }
 

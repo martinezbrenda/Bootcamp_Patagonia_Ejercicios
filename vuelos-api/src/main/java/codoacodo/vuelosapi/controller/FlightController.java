@@ -1,5 +1,6 @@
 package codoacodo.vuelosapi.controller;
 
+import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,20 @@ public class FlightController {
     public Flight addFlight (@RequestBody Flight flight){
         return flightService.addFlight(flight);
     }
+
+    @GetMapping("/dolares")
+    public List<Dolar> getDolares(){
+        return flightService.getDolares();
+    }
+
+    @GetMapping("/dolar/{casa}")
+    public Dolar getDolarCasa(@PathVariable(name = "casa") String casa){
+        return flightService.getDolarCasa(casa);
+    }
+    @GetMapping("/dolar")
+    public double getDolar(){
+        return flightService.getDolarCasa("tarjeta").getPromedio();
+    }
     @PostMapping("/addList")
     public List<Flight> addFlightList (@RequestBody List<Flight> flights){
         return flightService.addFlightList(flights);
@@ -51,5 +66,7 @@ public class FlightController {
     public void deleteFlight(@PathVariable Long id){
        flightService.deleteFlight(id);
     }
+
+
 
 }

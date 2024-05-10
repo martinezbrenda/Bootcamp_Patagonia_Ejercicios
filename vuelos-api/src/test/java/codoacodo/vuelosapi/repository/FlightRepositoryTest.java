@@ -1,5 +1,4 @@
 package codoacodo.vuelosapi.repository;
-
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
@@ -19,10 +16,9 @@ public class FlightRepositoryTest {
     @Autowired
     private  FlightRepository flightRepository;
     private Flight flight;
-
     @BeforeEach
     void setUp(){
-        flight = new Flight("COR","EZE","12-04-2024","12-04-2024",300,"Mensual");
+          flight = new Flight("COR","EZE","12-04-2024","12-04-2024",300,"Mensual");
     }
     @Test
     void saveFlightTest(){
@@ -31,7 +27,6 @@ public class FlightRepositoryTest {
         assertThat(flightBD).isNotNull();
         assertThat(flightBD.getId()).isGreaterThan(0);
     }
-
     @Test
     void flightFindByIdTest(){
         flightRepository.save(flight);
@@ -47,7 +42,6 @@ public class FlightRepositoryTest {
         assertThat(flightList).isNotNull();
         assertThat(flightList.size()).isEqualTo(2);
     }
-
     @Test
     void flightDeleteById(){
         flightRepository.save(flight);
