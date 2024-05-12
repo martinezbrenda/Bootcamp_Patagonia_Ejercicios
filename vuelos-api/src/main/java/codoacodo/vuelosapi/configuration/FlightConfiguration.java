@@ -24,6 +24,11 @@ public class FlightConfiguration {
         return Arrays.asList(dolaresArray);
     }
 
+    public Dolar[] fetchAllDolars(){
+        RestTemplate restTemplate = restTemplate();
+        String apiURL = "https://dolarapi.com/v1/dolares";
+        return restTemplate.getForEntity(apiURL,Dolar[].class).getBody();
+    }
     public Dolar fetchDolarCasa(String casa){
         RestTemplate restTemplate = restTemplate();
         String apiURL = "https://dolarapi.com/v1/dolares/";

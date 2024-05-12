@@ -30,9 +30,7 @@ public class FlightService {
     }
 
     public List<FlightDTO> getAllFlights() {
-        List<Flight> flightList = flightRepository.findAll();
-        List<FlightDTO> flightDTOList = flightList.stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList());
-        return flightDTOList;
+        return flightRepository.findAll().stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList());
     }
 
     public Flight addFlight(Flight flight){
@@ -77,8 +75,14 @@ public class FlightService {
 
     }
 
-    public List<Flight> getLessThan(float price){
-        return flightUtils.detectOffers(flightRepository.findAll(),price);
+    public List<FlightDTO> getLessThan(double price){
+        /*flightRepository.findAll().stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList())*/
+        /*Supongo que el precio recibido es en pesos*/
+        double priceInDolars = ( price / getDolarTarjeta());
+        /* Obtengo el precio en dolares y busco por como estan guardados en la base de datos*/
+        List<Flight> flightList = flightUtils.detectOffers(flightRepository.findAll(),priceInDolars);
+        /* convierto la lista de ofertas en dolares a lista de ofertas en pesos*/
+        return flightList.stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList());
     }
 
     public List <Dolar> getDolares(){
@@ -89,6 +93,9 @@ public class FlightService {
     }
     public double getDolarTarjeta(){
         return flightConfiguration.fetchDolarCasa("tarjeta").getPromedio();
+    }
+    public Dolar[] fetchAllDolars(){
+        return flightConfiguration.fetchAllDolars();
     }
 }
 

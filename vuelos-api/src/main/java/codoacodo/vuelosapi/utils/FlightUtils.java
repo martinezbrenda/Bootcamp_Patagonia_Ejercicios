@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class FlightUtils {
-    public List<Flight> detectOffers(List<Flight> flightList, float price){
+    public List<Flight> detectOffers(List<Flight> flightList, double price){
         return flightList.stream().filter(flight -> flight.getPrice() < price).collect(Collectors.toList());
     }
 

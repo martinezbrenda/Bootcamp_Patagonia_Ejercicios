@@ -31,7 +31,7 @@ public class FlightController {
     }
 
     @GetMapping("/less/{price}")
-    public List<Flight> getLessThan(@PathVariable(name = "price") Long price){
+    public List<FlightDTO> getLessThan(@PathVariable(name = "price") double price){
         return flightService.getLessThan(price);
     }
 
@@ -45,6 +45,10 @@ public class FlightController {
         return flightService.getDolares();
     }
 
+    @GetMapping("fetchAllDolars")
+    public Dolar[] fetchAllDolars (){
+        return flightService.fetchAllDolars();
+    }
     @GetMapping("/dolar/{casa}")
     public Dolar getDolarCasa(@PathVariable(name = "casa") String casa){
         return flightService.getDolarCasa(casa);
