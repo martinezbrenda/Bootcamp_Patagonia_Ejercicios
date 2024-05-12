@@ -4,6 +4,7 @@ import codoacodo.vuelosapi.FlightException.FlightException;
 import codoacodo.vuelosapi.configuration.FlightConfiguration;
 import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
+import codoacodo.vuelosapi.model.FlightDTO;
 import codoacodo.vuelosapi.repository.FlightRepository;
 import codoacodo.vuelosapi.utils.FlightUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
@@ -27,8 +29,10 @@ public class FlightService {
         return "Hola Mundo!";
     }
 
-    public List<Flight> getAllFlights() {
-        return flightRepository.findAll();
+    public List<FlightDTO> getAllFlights() {
+        List<Flight> flightList = flightRepository.findAll();
+        List<FlightDTO> flightDTOList = flightList.stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList());
+        return flightDTOList;
     }
 
     public Flight addFlight(Flight flight){
@@ -82,6 +86,9 @@ public class FlightService {
     }
     public Dolar getDolarCasa(String casa){
         return flightConfiguration.fetchDolarCasa(casa);
+    }
+    public double getDolarTarjeta(){
+        return flightConfiguration.fetchDolarCasa("tarjeta").getPromedio();
     }
 }
 

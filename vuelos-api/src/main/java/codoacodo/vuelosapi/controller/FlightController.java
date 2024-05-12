@@ -2,6 +2,7 @@ package codoacodo.vuelosapi.controller;
 
 import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
+import codoacodo.vuelosapi.model.FlightDTO;
 import codoacodo.vuelosapi.services.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,12 @@ public class FlightController {
         return flightService.HolaMundo();
     }
     @GetMapping("/list")
-    public List<Flight> getAllFlights(){
+    public List<FlightDTO> getAllFlights(){
         return flightService.getAllFlights();
     }
 
     @GetMapping("{id}")
-    public Optional<Flight> flightById(@PathVariable(name = "id") Long id){
+    public Optional<Flight> lightById(@PathVariable(name = "id") Long id){
         return flightService.flightById(id);
     }
 
@@ -48,10 +49,12 @@ public class FlightController {
     public Dolar getDolarCasa(@PathVariable(name = "casa") String casa){
         return flightService.getDolarCasa(casa);
     }
+
     @GetMapping("/dolar")
     public double getDolar(){
-        return flightService.getDolarCasa("tarjeta").getPromedio();
+        return flightService.getDolarTarjeta();
     }
+
     @PostMapping("/addList")
     public List<Flight> addFlightList (@RequestBody List<Flight> flights){
         return flightService.addFlightList(flights);
@@ -66,7 +69,5 @@ public class FlightController {
     public void deleteFlight(@PathVariable Long id){
        flightService.deleteFlight(id);
     }
-
-
 
 }

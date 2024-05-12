@@ -21,7 +21,6 @@ public class FlightConfiguration {
         RestTemplate restTemplate = restTemplate();
         String apiURL = "https://dolarapi.com/v1/dolares";
         Dolar[] dolaresArray = restTemplate.getForObject(apiURL, Dolar[].class);
-
         return Arrays.asList(dolaresArray);
     }
 
@@ -31,4 +30,5 @@ public class FlightConfiguration {
         String finalApiURL = apiURL + casa;
         return restTemplate.getForObject(finalApiURL, Dolar.class);
     }
+
 }
