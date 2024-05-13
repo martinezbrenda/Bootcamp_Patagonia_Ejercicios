@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class FlightService {
@@ -30,13 +30,15 @@ public class FlightService {
     }
 
     public List<FlightDTO> getAllFlights() {
-        return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta()));
+        return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta());
     }
 
     public Flight addFlight(Flight flight){
+
         return flightRepository.save(flight);
     }
     public List<Flight> addFlightList(List<Flight> flights){
+
         return flightRepository.saveAll(flights);
     }
 
