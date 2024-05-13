@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long Id;
+    private long id;
     private String name;
     private String banner;
 

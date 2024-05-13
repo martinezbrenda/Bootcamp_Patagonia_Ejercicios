@@ -2,9 +2,11 @@ package codoacodo.vuelosapi.services;
 
 import codoacodo.vuelosapi.FlightException.FlightException;
 import codoacodo.vuelosapi.configuration.FlightConfiguration;
+import codoacodo.vuelosapi.model.Company;
 import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.model.FlightDTO;
+import codoacodo.vuelosapi.repository.CompanyRepository;
 import codoacodo.vuelosapi.repository.FlightRepository;
 import codoacodo.vuelosapi.utils.FlightUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,6 +27,8 @@ public class FlightService {
     FlightUtils flightUtils;
     @Autowired
     FlightConfiguration flightConfiguration;
+    @Autowired
+    CompanyRepository companyRepository;
 
     public String HolaMundo() {
         return "Hola Mundo!";
@@ -37,6 +42,7 @@ public class FlightService {
 
         return flightRepository.save(flight);
     }
+
     public List<Flight> addFlightList(List<Flight> flights){
 
         return flightRepository.saveAll(flights);
@@ -58,6 +64,24 @@ public class FlightService {
         return flightRepository.findById(id);
     }
 
+    public Optional<List<FlightDTO>> addFlightsToCompany(List<Flight> flightList, long companyId){
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()){
+            return Optional.empty();
+        }
+        Company existinCompany = company.get();
+        flightList.forEach(flight -> flight.setCompany(existinCompany));
+        return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
+    }
+    public Optional<FlightDTO> addFlightToCompany(Flight flight, long companyId){
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(company.isEmpty())
+            return Optional.empty();
+        Company existingCompany = company.get();
+        flight.setCompany(existingCompany);
+        return Optional.of(flightUtils.flightMapper(flight, getDolarTarjeta()));
+    }
+
     public void deleteFlight(Long id){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
         if(existingFlight != null)
@@ -66,7 +90,7 @@ public class FlightService {
             throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
     }
 
-    public Optional<Flight> flightById (Long id){
+    public Optional<Flight> findById (Long id){
         Flight existingFlight = flightRepository.findById(id).orElse(null);
         if(existingFlight != null)
             return Optional.of(existingFlight);
@@ -74,6 +98,26 @@ public class FlightService {
             throw new FlightException("El vuelo con ID " + id + " no existe");
 
     }
+
+
+    public Optional<List<FlightDTO>> findByCompany(long companyId) {
+        try {
+            List<Flight> flightList = flightRepository.findAll().stream()
+                    .filter(flight -> flight.getCompany().getId() == companyId)
+                    .collect(Collectors.toList());
+
+            if (flightList.isEmpty()) {
+                return Optional.empty();
+            } else {
+                return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+
 
     public List<FlightDTO> getLessThan(double price){
         /*flightRepository.findAll().stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList())*/

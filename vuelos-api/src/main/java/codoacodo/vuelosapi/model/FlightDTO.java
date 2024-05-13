@@ -17,4 +17,5 @@ public class FlightDTO {
     private String arrivalDate;
     private double convertedPrice;
     private String frequency;
+    private Company company;
 }

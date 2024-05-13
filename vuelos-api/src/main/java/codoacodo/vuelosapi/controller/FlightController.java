@@ -1,5 +1,6 @@
 package codoacodo.vuelosapi.controller;
 
+import codoacodo.vuelosapi.model.Company;
 import codoacodo.vuelosapi.model.Dolar;
 import codoacodo.vuelosapi.model.Flight;
 import codoacodo.vuelosapi.model.FlightDTO;
@@ -25,9 +26,14 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
+    @GetMapping("/findByCompany/{companyId}")
+    public Optional<List<FlightDTO>> findByCompany(@PathVariable (name = "companyId") long companyId){
+       return flightService.findByCompany(companyId);
+    }
+
     @GetMapping("{id}")
-    public Optional<Flight> lightById(@PathVariable(name = "id") Long id){
-        return flightService.flightById(id);
+    public Optional<Flight> findById(@PathVariable(name = "id") Long id){
+        return flightService.findById(id);
     }
 
     @GetMapping("/less/{price}")
@@ -50,11 +56,6 @@ public class FlightController {
         return flightService.getByOriginAndDestination(origin, destination);
     }
 
-    @PostMapping("/add")
-    public Flight addFlight (@RequestBody Flight flight){
-        return flightService.addFlight(flight);
-    }
-
     @GetMapping("/dolares")
     public List<Dolar> getDolares(){
         return flightService.getDolares();
@@ -62,6 +63,7 @@ public class FlightController {
 
     @GetMapping("fetchAllDolars")
     public Dolar[] fetchAllDolars (){
+
         return flightService.fetchAllDolars();
     }
     @GetMapping("/dolar/{casa}")
@@ -74,9 +76,23 @@ public class FlightController {
         return flightService.getDolarTarjeta();
     }
 
+    @PostMapping("/add")
+    public Flight addFlight (@RequestBody Flight flight){
+        return flightService.addFlight(flight);
+    }
+
     @PostMapping("/addList")
     public List<Flight> addFlightList (@RequestBody List<Flight> flights){
         return flightService.addFlightList(flights);
+    }
+    @PostMapping("/addFlightsToCompany")
+    public Optional<List<FlightDTO>> addFlightsToCompany(@RequestBody List<Flight> flights, @RequestParam("companyId") long companyId){
+        return flightService.addFlightsToCompany(flights,companyId);
+    }
+
+    @PostMapping("/addFlightToCompany")
+    public Optional<FlightDTO> addFlightToCompany(@RequestBody Flight flight, @RequestParam("companyId") long companyId){
+        return flightService.addFlightToCompany(flight,companyId);
     }
 
     @PutMapping("/update/{id}")
