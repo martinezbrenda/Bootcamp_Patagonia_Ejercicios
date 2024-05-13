@@ -30,7 +30,7 @@ public class FlightService {
     }
 
     public List<FlightDTO> getAllFlights() {
-        return flightRepository.findAll().stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList());
+        return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta()));
     }
 
     public Flight addFlight(Flight flight){
@@ -62,8 +62,6 @@ public class FlightService {
             flightRepository.deleteById(id);
         else
             throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
-
-
     }
 
     public Optional<Flight> flightById (Long id){
