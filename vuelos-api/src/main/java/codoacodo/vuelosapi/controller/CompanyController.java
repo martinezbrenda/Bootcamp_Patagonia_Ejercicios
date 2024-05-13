@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CompanyController {
     @Autowired
     CompanyService companyService;
-
+    @CrossOrigin
     @GetMapping("/list")
     public List<Company> getAllCompanies(){
         return companyService.getAllCompanies();
