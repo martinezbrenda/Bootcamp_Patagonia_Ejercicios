@@ -17,8 +17,16 @@ public class FlightUtils {
     }
 
     public FlightDTO flightMapper(Flight flight, double price){
-        FlightDTO flightDTO = new FlightDTO(flight.getId(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate(),
+        return new FlightDTO(flight.getId(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate(),
                 flight.getArrivalDate(), flight.getPrice() * price, flight.getFrequency());
-        return  flightDTO;
+    }
+
+    public List<FlightDTO> flightListMapper(List<Flight> flightList, double price){
+        List<FlightDTO> flightDTOList = new ArrayList<>();
+        for(Flight flight : flightList){
+            flightDTOList.add(new FlightDTO(flight.getId(), flight.getOrigin(), flight.getDestination(),
+                    flight.getDepartureDate(), flight.getArrivalDate(), flight.getPrice() * price, flight.getFrequency()));
+        }
+        return flightDTOList;
     }
 }

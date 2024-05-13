@@ -35,6 +35,21 @@ public class FlightController {
         return flightService.getLessThan(price);
     }
 
+    @GetMapping("/origin")
+    public Optional<List<FlightDTO>> getByOrigin(@RequestParam String origin){
+        return flightService.getByOrigin(origin);
+    }
+
+    @GetMapping("/destination")
+    public Optional<List<FlightDTO>> getByDestination(@RequestParam String destination){
+        return flightService.getByDestination(destination);
+    }
+
+    @GetMapping("/locations")
+    public Optional<List<FlightDTO>> getFlightsByLocations(@RequestParam String origin, @RequestParam String destination) {
+        return flightService.getByOriginAndDestination(origin, destination);
+    }
+
     @PostMapping("/add")
     public Flight addFlight (@RequestBody Flight flight){
         return flightService.addFlight(flight);
