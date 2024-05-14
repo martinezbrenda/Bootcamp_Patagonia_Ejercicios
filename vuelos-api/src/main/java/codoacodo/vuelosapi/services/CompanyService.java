@@ -1,4 +1,5 @@
 package codoacodo.vuelosapi.services;
+import codoacodo.vuelosapi.CompanyException.CompanyException;
 import codoacodo.vuelosapi.model.Company;
 import codoacodo.vuelosapi.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class CompanyService {
         if(company != null){
             return Optional.of(company);
         }else{
-            return Optional.empty();
+            throw new CompanyException("No existe la compania con el id: " + id);
         }
     }
 
@@ -38,7 +39,7 @@ public class CompanyService {
             companyRepository.deleteById(id);
             return "Eliminada con exito";
         }else{
-            return "No se logro eliminar";
+            throw new CompanyException("No existe la compania con el id: " + id);
         }
     }
 
@@ -51,7 +52,8 @@ public class CompanyService {
             companyRepository.save(existingCompany);
             return Optional.of(existingCompany);
         } else {
-            return Optional.empty();
+            throw new CompanyException("No existe la compania con el id: " + id);
+
         }
     }
 }
