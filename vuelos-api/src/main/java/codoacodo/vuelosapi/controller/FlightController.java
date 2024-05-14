@@ -17,10 +17,7 @@ import java.util.Optional;
 public class FlightController {
     @Autowired
     private FlightService flightService;
-    @GetMapping("/HolaMundo")
-    public String HolaMundo(){
-        return flightService.HolaMundo();
-    }
+
     @GetMapping("/list")
     public List<FlightDTO> getAllFlights(){
         return flightService.getAllFlights();
@@ -32,7 +29,7 @@ public class FlightController {
     }
 
     @GetMapping("{id}")
-    public Optional<Flight> findById(@PathVariable(name = "id") Long id){
+    public Optional<FlightDTO> findById(@PathVariable(name = "id") Long id){
         return flightService.findById(id);
     }
 
@@ -86,13 +83,18 @@ public class FlightController {
         return flightService.addFlightList(flights);
     }
     @PostMapping("/addFlightsToCompany")
-    public Optional<List<FlightDTO>> addFlightsToCompany(@RequestBody List<Flight> flights, @RequestParam("companyId") long companyId){
+    public Optional<List<FlightDTO>> addFlightsToCompany(@RequestBody List<Flight> flights, @RequestParam long companyId){
         return flightService.addFlightsToCompany(flights,companyId);
     }
 
     @PostMapping("/addFlightToCompany")
-    public Optional<FlightDTO> addFlightToCompany(@RequestBody Flight flight, @RequestParam("companyId") long companyId){
+    public Optional<FlightDTO> addFlightToCompany(@RequestBody Flight flight, @RequestParam long companyId){
         return flightService.addFlightToCompany(flight,companyId);
+    }
+
+    @PostMapping("/addToCompany")
+    public Optional<List<FlightDTO>> addToCompany(@RequestBody List<Long> flightsId, @RequestParam long companyId){
+        return flightService.addToCompany(flightsId, companyId);
     }
 
     @PutMapping("/update/{id}")

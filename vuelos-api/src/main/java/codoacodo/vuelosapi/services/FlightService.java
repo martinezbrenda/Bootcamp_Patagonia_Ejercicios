@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,75 +31,9 @@ public class FlightService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public String HolaMundo() {
-        return "Hola Mundo!";
-    }
-
     public List<FlightDTO> getAllFlights() {
         return flightUtils.flightListMapper(flightRepository.findAll(),getDolarTarjeta());
     }
-
-    public Flight addFlight(Flight flight){
-
-        return flightRepository.save(flight);
-    }
-
-    public List<Flight> addFlightList(List<Flight> flights){
-
-        return flightRepository.saveAll(flights);
-    }
-
-    public Optional<Flight> updateFlight(Long id, Flight updatedFlight){
-        Flight existingFlight = flightRepository.findById(id).orElse(null);
-        if (existingFlight != null) {
-            existingFlight.setOrigin(updatedFlight.getOrigin());
-            existingFlight.setDestination(updatedFlight.getDestination());
-            existingFlight.setDepartureDate(updatedFlight.getDepartureDate());
-            existingFlight.setPrice(updatedFlight.getPrice());
-            existingFlight.setFrequency(updatedFlight.getFrequency());
-
-            flightRepository.save(existingFlight);
-        } else {
-            throw new FlightException("El vuelo con ID " + id + " no existe. No se puede actualizar.");
-        }
-        return flightRepository.findById(id);
-    }
-
-    public Optional<List<FlightDTO>> addFlightsToCompany(List<Flight> flightList, long companyId){
-        Optional<Company> company = companyRepository.findById(companyId);
-        if (company.isEmpty()){
-            return Optional.empty();
-        }
-        Company existinCompany = company.get();
-        flightList.forEach(flight -> flight.setCompany(existinCompany));
-        return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
-    }
-    public Optional<FlightDTO> addFlightToCompany(Flight flight, long companyId){
-        Optional<Company> company = companyRepository.findById(companyId);
-        if(company.isEmpty())
-            return Optional.empty();
-        Company existingCompany = company.get();
-        flight.setCompany(existingCompany);
-        return Optional.of(flightUtils.flightMapper(flight, getDolarTarjeta()));
-    }
-
-    public void deleteFlight(Long id){
-        Flight existingFlight = flightRepository.findById(id).orElse(null);
-        if(existingFlight != null)
-            flightRepository.deleteById(id);
-        else
-            throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
-    }
-
-    public Optional<Flight> findById (Long id){
-        Flight existingFlight = flightRepository.findById(id).orElse(null);
-        if(existingFlight != null)
-            return Optional.of(existingFlight);
-        else
-            throw new FlightException("El vuelo con ID " + id + " no existe");
-
-    }
-
 
     public Optional<List<FlightDTO>> findByCompany(long companyId) {
         try {
@@ -117,8 +52,14 @@ public class FlightService {
         }
     }
 
+    public Optional<FlightDTO> findById (Long id){
+        Flight existingFlight = flightRepository.findById(id).orElse(null);
+        if(existingFlight != null)
+            return Optional.of(flightUtils.flightMapper(existingFlight, getDolarTarjeta()));
+        else
+            throw new FlightException("El vuelo con ID " + id + " no existe");
 
-
+    }
     public List<FlightDTO> getLessThan(double price){
         /*flightRepository.findAll().stream().map(flight -> flightUtils.flightMapper(flight,getDolarTarjeta())).collect(Collectors.toList())*/
         /*Supongo que el precio recibido es en pesos*/
@@ -147,15 +88,88 @@ public class FlightService {
     public List <Dolar> getDolares(){
         return flightConfiguration.fetchDolares();
     }
-    public Dolar getDolarCasa(String casa){
-        return flightConfiguration.fetchDolarCasa(casa);
-    }
-    public double getDolarTarjeta(){
-        return flightConfiguration.fetchDolarCasa("tarjeta").getPromedio();
-    }
+
     public Dolar[] fetchAllDolars(){
         return flightConfiguration.fetchAllDolars();
     }
+
+    public Dolar getDolarCasa(String casa){
+        return flightConfiguration.fetchDolarCasa(casa);
+    }
+
+    public double getDolarTarjeta(){
+        return flightConfiguration.fetchDolarCasa("tarjeta").getPromedio();
+    }
+
+    public Flight addFlight(Flight flight){
+
+        return flightRepository.save(flight);
+    }
+
+    public List<Flight> addFlightList(List<Flight> flights){
+
+        return flightRepository.saveAll(flights);
+    }
+
+    public Optional<List<FlightDTO>> addFlightsToCompany(List<Flight> flightList, long companyId){
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()){
+            return Optional.empty();
+        }
+        Company existinCompany = company.get();
+        flightList.forEach(flight -> flight.setCompany(existinCompany));
+        flightRepository.saveAll(flightList);
+        return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
+    }
+
+    public Optional<FlightDTO> addFlightToCompany(Flight flight, long companyId){
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(company.isEmpty())
+            return Optional.empty();
+        Company existingCompany = company.get();
+        flight.setCompany(existingCompany);
+        flightRepository.save(flight);
+        return Optional.of(flightUtils.flightMapper(flight, getDolarTarjeta()));
+    }
+    public Optional<List<FlightDTO>> addToCompany(List<Long> flightsId, long companyId) {
+        List<Flight> flightList = flightRepository.findAllById(flightsId);
+        Optional<Company> company = companyRepository.findById(companyId);
+        if (company.isEmpty()){
+            return Optional.empty();
+        }
+        if(flightList.isEmpty()){
+            return Optional.empty();
+        }
+        Company existinCompany = company.get();
+        flightList.forEach(flight -> flight.setCompany(existinCompany));
+        flightRepository.saveAll(flightList);
+        return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
+    }
+
+    public Optional<Flight> updateFlight(Long id, Flight updatedFlight){
+        Flight existingFlight = flightRepository.findById(id).orElse(null);
+        if (existingFlight != null) {
+            existingFlight.setOrigin(updatedFlight.getOrigin());
+            existingFlight.setDestination(updatedFlight.getDestination());
+            existingFlight.setDepartureDate(updatedFlight.getDepartureDate());
+            existingFlight.setPrice(updatedFlight.getPrice());
+            existingFlight.setFrequency(updatedFlight.getFrequency());
+            existingFlight.setCompany(updatedFlight.getCompany());
+            flightRepository.save(existingFlight);
+        } else {
+            throw new FlightException("El vuelo con ID " + id + " no existe. No se puede actualizar.");
+        }
+        return flightRepository.findById(id);
+    }
+
+    public void deleteFlight(Long id){
+        Flight existingFlight = flightRepository.findById(id).orElse(null);
+        if(existingFlight != null)
+            flightRepository.deleteById(id);
+        else
+            throw new FlightException("El vuelo con ID " + id + " no existe, no se puede eliminar");
+    }
+
 
 }
 
