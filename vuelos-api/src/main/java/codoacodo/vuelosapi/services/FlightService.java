@@ -40,7 +40,7 @@ public class FlightService {
                     .filter(flight -> flight.getCompany().getId() == companyId)
                     .collect(Collectors.toList());
             if (flightList.isEmpty()) {
-                throw new FlightException("No existen vuelos asiciados al Company Id: " + companyId);
+                throw new FlightException("No existen vuelos asociados al Company Id: " + companyId);
 
             } else {
                 return Optional.of(flightUtils.flightListMapper(flightList, getDolarTarjeta()));
